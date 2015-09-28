@@ -4,6 +4,7 @@ import {
     App,
     Chat,
     Home,
+    Movies,
     Widgets,
     About,
     Login,
@@ -17,6 +18,7 @@ export default function() {
   return (
     <Route component={App}>
       <Route path="/" component={Home}/>
+      <Route path="/movies" component={Movies}/>
       <Route path="/widgets" component={Widgets}/>
       <Route path="/about" component={About}/>
       <Route path="/login" component={Login}/>

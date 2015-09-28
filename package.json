@@ -96,6 +96,7 @@
     "pretty-error": "1.2.0",
     "query-string": "2.4.1",
     "react": "0.14.0-rc1",
+    "react-bootstrap": "^0.25.100-react-pre.1",
     "react-document-meta": "2.0.0-rc2",
     "react-dom": "0.14.0-rc1",
     "react-inline-css": "2.0.0",

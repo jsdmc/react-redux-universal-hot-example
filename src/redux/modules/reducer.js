@@ -5,11 +5,13 @@ import counter from './counter';
 import {reducer as form} from 'redux-form';
 import info from './info';
 import widgets from './widgets';
+import movies from './movies';
 
 export default combineReducers({
   auth,
   counter,
   form,
   info,
-  widgets
+  widgets,
+  movies
 });

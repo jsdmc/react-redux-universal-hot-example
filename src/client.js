@@ -30,7 +30,7 @@ function initSocket() {
   return socket;
 }
 
-window.socket = initSocket();
+global.socket = initSocket();
 
 const location = createLocation(document.location.pathname, document.location.search);
 
@@ -51,6 +51,8 @@ const render = (loc, hist, str, preload) => {
       console.error(error);
     });
 };
+
+history.listen(() => {});
 
 history.listenBefore((loc, callback) => {
   render(loc, history, store, true)

@@ -14,9 +14,9 @@ import {
     NotFound,
   } from 'containers';
 
-export default function() {
+export default function(history) {
   return (
-    <Route component={App}>
+    <Route component={App} history={history}>
       <Route path="/" component={Home}/>
       <Route path="/movies" component={Movies}/>
       <Route path="/widgets" component={Widgets}/>

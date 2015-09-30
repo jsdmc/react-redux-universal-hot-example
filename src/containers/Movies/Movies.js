@@ -75,13 +75,12 @@ class Movies extends Component {
       </Modal>
     );
     const errorBlock = () => (
-      {
-        error &&
-        <div className="alert alert-danger" role="alert">
+      error &&
+      <div className="alert alert-danger" role="alert">
         <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
         {' '}
         {error}
-      }
+      </div>
     );
 
     return (
@@ -100,7 +99,6 @@ class Movies extends Component {
             </Button>
             { movieDialog() }
             { errorBlock() }
-            </div>}
             { movies && movies.length && movies.map((m) => (<div key={m.id}>{m.id}</div>))}
           </Tab>
           <Tab eventKey={2} title="Directors">Directors</Tab>

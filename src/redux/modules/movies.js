@@ -1,11 +1,16 @@
 const LOAD = 'redux-example/movies/LOAD';
 const LOAD_SUCCESS = 'redux-example/movies/LOAD_SUCCESS';
 const LOAD_FAIL = 'redux-example/movies/LOAD_FAIL';
-const EDIT_START = 'redux-example/movies/EDIT_START';
-const EDIT_STOP = 'redux-example/movies/EDIT_STOP';
 const SAVE = 'redux-example/movies/SAVE';
 const SAVE_SUCCESS = 'redux-example/movies/SAVE_SUCCESS';
 const SAVE_FAIL = 'redux-example/movies/SAVE_FAIL';
+// const CREATE = 'redux-example/movies/CREATE';
+// const CREATE_SUCCESS = 'redux-example/movies/CREATE_SUCCESS';
+// const CREATE_FAIL = 'redux-example/movies/CREATE_FAIL';
+const DELETE = 'redux-example/movies/DELETE';
+const DELETE_SUCCESS = 'redux-example/movies/DELETE_SUCCESS';
+const DELETE_FAIL = 'redux-example/movies/DELETE_FAIL';
+
 
 const initialState = {
   loaded: false,
@@ -35,22 +40,6 @@ export default function reducer(state = initialState, action = {}) {
         loaded: false,
         data: null,
         error: action.error
-      };
-    case EDIT_START:
-      return {
-        ...state,
-        editing: {
-          ...state.editing,
-          [action.id]: true
-        }
-      };
-    case EDIT_STOP:
-      return {
-        ...state,
-        editing: {
-          ...state.editing,
-          [action.id]: false
-        }
       };
     case SAVE:
       return state; // 'saving' flag handled by redux-form
@@ -86,6 +75,14 @@ export function isLoaded(globalState) {
   return globalState.movies && globalState.movies.loaded;
 }
 
+export function remove(id) {
+  return {
+    types: [DELETE, DELETE_SUCCESS, DELETE_FAIL],
+    id: id,
+    promise: (client) => client.delete('/movie/delete/' +  id)
+  };
+}
+
 export function load() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
@@ -101,12 +98,4 @@ export function save(movie) {
       data: movie
     })
   };
-}
-
-export function editStart(id) {
-  return { type: EDIT_START, id };
-}
-
-export function editStop(id) {
-  return { type: EDIT_STOP, id };
 }

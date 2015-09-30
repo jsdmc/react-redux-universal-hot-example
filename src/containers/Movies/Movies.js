@@ -8,7 +8,9 @@ import { MovieForm } from 'components';
 
 @connect(
   state => ({
-    movies: state.movies.data
+    movies: state.movies.data,
+    error: state.movies.error,
+    loading: state.movies.loading
   }),
   dispatch => ({
     ...bindActionCreators({ ...movieActions }, dispatch)
@@ -20,6 +22,7 @@ class Movies extends Component {
     movies: PropTypes.array,
     loading: PropTypes.bool,
     load: PropTypes.func.isRequired,
+    save: PropTypes.func.isRequired,
     error: PropTypes.string
   }
 
@@ -34,15 +37,11 @@ class Movies extends Component {
   }
 
   handleSubmit(data) {
-    window.alert('Data submitted! ' + JSON.stringify(data));
+    this.props.save(data);
   }
 
   showMovieForm() {
-    this.setState({showModal: true});
-  }
-
-  hideMovieForm() {
-    this.setState({ showModal: false });
+    this.setState({showModal: !this.state.showModal});
   }
 
   render() {
@@ -53,20 +52,20 @@ class Movies extends Component {
     }
     const styles = require('./Movies.scss');
     const movieDialog = () => (
-      <Modal show={this.state.showModal} onHide={::this.hideMovieForm}>
+      <Modal show={this.state.showModal} onHide={::this.showMovieForm}>
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <MovieForm/>
+          <MovieForm handleSubmit={this.handleSubmit}/>
         </Modal.Body>
         <Modal.Footer>
           <Row className="form-group">
             <Col sm={6} smOffset={2}>
-              <Button bsStyle="success" onClick={::this.hideMovieForm}>
+              <Button bsStyle="success" onClick={::this.handleSubmit}>
                 <i className="fa fa-paper-plane"/> Submit
               </Button>
-              <Button bsStyle="warning" style={{marginLeft: 15}}>
+              <Button bsStyle="warning" onClick={::this.showMovieForm} style={{marginLeft: 15}}>
                 <i className="fa fa-undo"/> Reset
               </Button>
             </Col>
@@ -99,7 +98,7 @@ class Movies extends Component {
             </Button>
             { movieDialog() }
             { errorBlock() }
-            { movies && movies.length && movies.map((m) => (<div key={m.id}>{m.id}</div>))}
+            { movies && movies.length && movies.map((m) => (<div key={m.id}>{m.id}<span>{' ' + m.title}</span></div>))}
           </Tab>
           <Tab eventKey={2} title="Directors">Directors</Tab>
         </Tabs>

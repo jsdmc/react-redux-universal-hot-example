@@ -8,9 +8,11 @@ import * as actions from './actions/index';
 import PrettyError from 'pretty-error';
 import http from 'http';
 import SocketIo from 'socket.io';
+import * as moviesController from './actions/movie';
 
-const pretty = new PrettyError();
-const app = express();
+const pretty = new PrettyError(),
+      app = express(),
+      router = express.Router();  
 
 const server = new http.Server(app);
 
@@ -26,7 +28,7 @@ app.use(session({
 app.use(bodyParser.json());
 
 
-app.use((req, res) => {
+const handleAction = (req, res) => {
 
   const matcher = req.url.split('?')[0].split('/').slice(1);
 
@@ -64,8 +66,39 @@ app.use((req, res) => {
   } else {
     res.status(404).end('NOT FOUND');
   }
+};
+
+// Actions from original example
+router.get('/loadInfo', function(req, res) {
+    handleAction(req, res);
+});
+router.get('/login', function(req, res) {
+    handleAction(req, res);
+});
+router.get('/logout', function(req, res) {
+    handleAction(req, res);
+});
+router.get('/loadAuth', function(req, res) {
+    handleAction(req, res);
+});
+router.get('/widget/load/:param1/:param2', function(req, res) {
+    handleAction(req, res);
+});
+router.get('/widget/update', function(req, res) {
+    handleAction(req, res);
 });
 
+// actions added for movies
+router.route('/movies')
+  .get(moviesController.getAll)
+  .post(moviesController.create)
+router.route('/movies/:id')
+  .get(moviesController.getById)
+  .put(moviesController.update)
+  .delete(moviesController.deleteById)
+
+//
+app.use('/', router);
 
 const bufferSize = 100;
 const messageBuffer = new Array(bufferSize);
